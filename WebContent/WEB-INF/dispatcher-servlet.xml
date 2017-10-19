@@ -41,5 +41,58 @@
 				<value>messages.validation</value>
 			</list>
 		</property>
+		</bean>
+
+		<bean class="oct17.GameInfoController" />
+
+		<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+			<property name="alwaysUseFullPath" value="true" />
+			<property name="interceptors">
+				<list>
+					<ref bean="eventExpirationCheckInterceptor" />
+				</list>
+			</property>
+		</bean>
+
+		<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+			<property name="alwaysUseFullPath" value="true" />		
+		</bean>
+
+		<bean class="oct17.CharacterInfoController" />
+		
+		<bean id="authenticator" class="oct18.model.MockAuthenticator"
+		p:commonLogger-ref="commonLogger" />
+
+		<bean class="oct18.controller.LoginController">
+			<property name="authenticator" ref="authenticator" />
+		</bean>
+
+		<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		</bean>
+
+		<bean class="oct18.controller.ReportSubmissionController" />
+
+		<bean class="oct19.controller.EventController" />
+		
+		
+		<bean id="eventExpirationCheckInterceptor" class="oct19.controller.EventExpirationCheckInterceptor" />
+		
+		<bean class="oct19.controller.QueryLogController" />
+
+		<bean class="oct19.controller.ArithmeticOperatorController" />
+
+		<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.ArithmeticException">
+					oct19/error/mathException
+				</prop>
+				<prop key="java.lang.Exception">
+					oct19/error/exception
+				</prop>
+			</props>
+		</property>
 	</bean>
+		
+
 	</beans>
